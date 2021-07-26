@@ -18,7 +18,7 @@ fixing the distribution of the layer inputs as the training
 progresses, the training process is expected to improve. As a 
 matter of fact, it has been long known that the network training 
 converges faster if its inputs are *whitened* (linearly transformed 
-to have zero means and unit variances). Doing so to inpout images
+to have zero means and unit variances). Doing so to input images
 is an important step in neural network training, with this paper
 the authors introduced a novel method to yield *withened* inputs to 
 every single layer.
@@ -27,26 +27,26 @@ every single layer.
 First of all, batch normalization is performed slightly differently 
 during training and at inference time.
 #### During the training process, for each batch:
-1. The mean is computed
+1. The mean is computed.
    
-2. The variance is computed
+2. The variance is computed.
    
 3. The computed mean and variance are used to update dataset statistics by
-means of a moving average. These statistics will be employed during inference
+means of a moving average. These statistics will be employed during inference.
 
-4. tensors are normalized, by subtracting the batch mean and dividing 
-   for the batch variance (to which is summed a small epsilon value)
+4. Tensors are normalized by subtracting the batch mean and dividing 
+   for the batch variance (to which a small epsilon value is summed).
    
 5. Given the fact that normalizing each input of a layer may change 
    what the layer can represent, tensors are further scaled by multiplying 
-   them for learned parameter *gamma*, and scaled by summing learned
-   parameter *beta* to them. This step ensures that the transformation 
+   them for learned parameter *gamma*, and shifted by summing learned
+   parameter *beta* to them. This step ensures that each transformation 
    inserted in the network can represent the identity transform.
    
 #### During inference, for each image:
 
 1. tensors are normalized, by subtracting the **dataset mean** and dividing 
-   for the **dataset variance** (to which is summed a small epsilon value)
+   for the **dataset variance** (to which a small epsilon value is summed)
    
 2. Step 5 of the training process is performed, although obiouvsly parameters
 gamma and beta will not be updated.
@@ -69,7 +69,13 @@ python main.py --bn
 ```
 Will launch the training of LeNet **with** batch normalization.
 
+The official pytorch MNIST download link seems to be unavailable, the dataset can be manually 
+downloaded by using
 
+```
+wget www.di.ens.fr/~lelarge/MNIST.tar.gz
+tar -zxvf MNIST.tar.gz
+```
 ### Results
 
 All experiments were run on a single K80, and evaluated by means of the balanced accuracy metric.
